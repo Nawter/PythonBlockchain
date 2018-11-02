@@ -14,3 +14,7 @@ class Block(object):
     def get_block_hash(self):
         block_string = "{}{}{}{}{}".format(self.index, self.proof, self.previous_hash, self.transactions, self.timestamp)
         return hashlib.sha256(block_string.encode()).hexdigest()
+
+    def __repr__(self):
+        return "{} - {} - {} - {} - {}".format(self.index, self.proof, self.previous_hash, self.transactions,
+                                               self.timestamp)
