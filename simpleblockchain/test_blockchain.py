@@ -31,13 +31,13 @@ def test_blockchain_classes():
 # --------------------------------- Testing Blockchain APIs --------------------------------------------
 
 def register_node(node, server):
-    resp = requests.post(server + '/register-node', json={'address': node}).json()
+    resp = requests.post(server + '/nodes/register', json={'address': node}).json()
     print("\nOn Server {}: Node-{} has been registered successfully!\n".format(server, node))
     return resp
 
 
 def create_transaction(server, data):
-    resp = requests.post(server + '/create-transaction', json=data).json()
+    resp = requests.post(server + '/transactions/new', json=data).json()
     print("On Server {}: Transaction has been processed!\n".format(server))
     return resp
 
@@ -56,7 +56,7 @@ def get_server_chain(server):
 
 def sync_chain(server):
     print("On Server {}: Started Syncing Chain . . .".format(server))
-    resp = requests.get(server + '/sync-chain')
+    resp = requests.get(server + '/consensus')
     print("On Server {}: Chain synced!\n".format(server))
     return resp
 
@@ -65,17 +65,17 @@ def test_web_app_classes():
     server1 = 'http://127.0.0.1:64037'
     server2 = 'http://127.0.0.1:64038'
 
-    register_node(server2, server1)  # server2 node will be register inside server1
     create_transaction(server2, {'sender': 'I', 'recipient': 'you', 'amount': 3})
     mine_block(server2)  # Mined a new block on server2
     #
     get_server_chain(server1)  # server1's chain
     get_server_chain(server2)  # server2's chain
     #
+    register_node(server2, server1)  # server2 node will be register inside server1
     sync_chain(server1)  # updating server1's chain with neighbour node's chain
     #
     get_server_chain(server1)  # server1's chain after syncing
-
+    get_server_chain(server2)  # server2's chain
 
 def main():
     print('Before')

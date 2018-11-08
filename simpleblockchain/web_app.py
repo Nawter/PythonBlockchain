@@ -11,7 +11,7 @@ blockchain = BlockChain()
 node_address = uuid4().hex
 
 
-@web_app.route('/create-transaction', methods=['POST'])
+@web_app.route('/transactions/new', methods=['POST'])
 def create_transaction():
     # Accepting Payload from user in JSON content type
     transaction_data = request.get_json()
@@ -41,7 +41,7 @@ def get_full_chain():
     return jsonify(response)
 
 
-@web_app.route('/register-node', methods=['POST'])
+@web_app.route('/nodes/register', methods=['POST'])
 def register_node():
     node_data = request.get_json()
     blockchain.create_node(node_data.get('address'))
@@ -62,8 +62,8 @@ def get_neighbour_chains():
     return neighbour_chains
 
 
-@web_app.route('/sync-chain', methods=['GET'])
-def consensus():
+@web_app.route('/consensus', methods=['GET'])
+def sync_chain():
     neighbour_chains = get_neighbour_chains()
     if not neighbour_chains:
         return jsonify({'message': 'No neighbour chain is available'})

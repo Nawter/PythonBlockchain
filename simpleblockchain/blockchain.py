@@ -85,8 +85,8 @@ class BlockChain(object):
         return Block(
             block_data['index'],
             block_data['proof'],
-            block_data['hash'],
             block_data['previous_hash'],
             block_data['transactions'],
-            timestamp=block_data['timestamp']
+            timestamp=block_data['timestamp'],
+            actual_hash=block_data['hash']
         )
